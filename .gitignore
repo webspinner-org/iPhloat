@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+.venv-*/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Local data + secrets — never commit
+*.sqlite
+*.db
+*.log
+.env
+.env.*
+!.env.example
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Node (if a frontend toolchain lands later)
+node_modules/
+.next/
+.nuxt/
+
+# Local notes (the Wizard's scratch — keep CLAUDE-readable docs
+# tracked, but plain personal scratch out)
+NOTES.local.md
+SCRATCH.md
