@@ -45,3 +45,9 @@ node_modules/
 # tracked, but plain personal scratch out)
 NOTES.local.md
 SCRATCH.md
+
+# Self-screenshot review artifacts (regenerate via scripts/snap.py)
+scripts/snap-out/
+
+# Generated site output (regenerate via `wsbuild build`)
+site-generated/

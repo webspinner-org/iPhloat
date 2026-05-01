@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>iPhloat &mdash; Sign in</title>
+  <meta name="description" content="iPhloat is in pre-launch. Sign in to continue.">
+  <link rel="stylesheet" href="/assets/style.css?v=1777601121">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body class="centered">
+  <main>
+    <div class="sign-in-card">
+      <h1>iPhloat</h1>
+      <p class="subtitle">In pre-launch. Sign in with Google to continue.</p>
+
+      <div id="google-button-host" class="sign-in-button-host"></div>
+
+      <div id="dev-signin" class="dev-signin" style="display:none">
+        <div class="subtitle" style="font-size:0.85rem; margin-bottom:1rem">Dev mode</div>
+        <form id="dev-form">
+          <input type="email" id="dev-email" placeholder="email@example.com" autocomplete="email">
+          <button type="submit" class="cta">Sign in</button>
+        </form>
+      </div>
+
+      <div id="sign-in-status" class="sign-in-status"></div>
+      <p class="small">iPhloat &middot; Powered by Webspinner</p>
+    </div>
+  </main>
+
+  <script>
+    (async function () {
+      const status = document.getElementById('sign-in-status');
+      const buttonHost = document.getElementById('google-button-host');
+      const devBlock = document.getElementById('dev-signin');
+
+      const setStatus = (msg, isError) => {
+        status.textContent = msg || '';
+        status.classList.toggle('error', !!isError);
+      };
+
+      let bootstrap;
+      try {
+        const r = await fetch('/bootstrap');
+        bootstrap = await r.json();
+      } catch (e) {
+        setStatus('Could not reach the server. Try again in a moment.', true);
+        return;
+      }
+
+      if (bootstrap.auth_mode === 'dev') {
+        devBlock.style.display = 'block';
+        document.getElementById('dev-form').addEventListener('submit', async (ev) => {
+          ev.preventDefault();
+          const email = document.getElementById('dev-email').value.trim();
+          if (!email) return;
+          setStatus('Signing in...');
+          try {
+            const r = await fetch('/auth/dev', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email }),
+            });
+            if (r.ok) {
+              setStatus('Signed in. Redirecting...');
+              window.location = '/';
+            } else {
+              const body = await r.json().catch(() => ({}));
+              setStatus(body.error || 'Sign-in rejected.', true);
+            }
+          } catch (e) {
+            setStatus('Network error. Try again.', true);
+          }
+        });
+      }
+
+      if (!bootstrap.google_client_id) {
+        if (bootstrap.auth_mode !== 'dev') {
+          setStatus('Sign-in is not yet configured. Please come back shortly.', true);
+        }
+        return;
+      }
+
+      const renderGoogleButton = () => {
+        if (typeof google === 'undefined' || !google.accounts) {
+          setTimeout(renderGoogleButton, 250);
+          return;
+        }
+        google.accounts.id.initialize({
+          client_id: bootstrap.google_client_id,
+          callback: async (response) => {
+            setStatus('Verifying...');
+            try {
+              const r = await fetch('/auth/google', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ credential: response.credential }),
+              });
+              if (r.ok) {
+                setStatus('Signed in. Redirecting...');
+                window.location = '/';
+              } else if (r.status === 403) {
+                const body = await r.json().catch(() => ({}));
+                setStatus(`${body.email || 'That account'} is not yet on the early-access list.`, true);
+              } else {
+                setStatus('Sign-in failed. Please try again.', true);
+              }
+            } catch (e) {
+              setStatus('Network error. Try again.', true);
+            }
+          },
+          auto_select: false,
+        });
+        google.accounts.id.renderButton(buttonHost, {
+          theme: 'outline',
+          size: 'large',
+          text: 'signin_with',
+          shape: 'rectangular',
+        });
+      };
+      renderGoogleButton();
+    })();
+  </script>
+</body>
+</html>

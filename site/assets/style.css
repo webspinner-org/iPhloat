@@ -1,0 +1,633 @@
+/* iPhloat — brand stylesheet.
+   Palette per Brief §2: iPhloat Navy #1e3a8a (hero), horizon orange
+   #f97316 (CTAs + accents), warm sand #f4f1ea (background), bone white
+   (cards), graphite #1f2937 (body). Light + dark themes via CSS
+   variables, real-time switchable via html[data-theme]. */
+
+:root {
+  --navy: #1e3a8a;
+  --navy-deep: #172554;
+  --orange: #f97316;
+  --orange-soft: #fb923c;
+  --sand: #f4f1ea;
+  --bone: #ffffff;
+  --graphite: #1f2937;
+  --graphite-soft: #4b5563;
+  --line: #e5e0d3;
+}
+
+/* Light theme (default) */
+:root, html[data-theme="light"] {
+  --bg: var(--sand);
+  --surface: var(--bone);
+  --fg: var(--graphite);
+  --fg-soft: var(--graphite-soft);
+  --hero-bg: var(--navy);
+  --hero-fg: var(--bone);
+  --hero-accent: #cbd5e1;
+  --cta-bg: var(--orange);
+  --cta-fg: var(--bone);
+  --cta-bg-hover: var(--orange-soft);
+  --link: var(--navy);
+  --line-color: var(--line);
+}
+
+/* Dark theme — invert chrome, keep navy and orange as anchors */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0a0e14;
+    --surface: #111827;
+    --fg: #e5e7eb;
+    --fg-soft: #9ca3af;
+    --hero-bg: var(--navy-deep);
+    --hero-fg: #f3f4f6;
+    --hero-accent: #94a3b8;
+    --cta-bg: var(--orange);
+    --cta-fg: #0a0e14;
+    --cta-bg-hover: var(--orange-soft);
+    --link: #93c5fd;
+    --line-color: #1f2937;
+  }
+}
+
+html[data-theme="dark"] {
+  --bg: #0a0e14;
+  --surface: #111827;
+  --fg: #e5e7eb;
+  --fg-soft: #9ca3af;
+  --hero-bg: var(--navy-deep);
+  --hero-fg: #f3f4f6;
+  --hero-accent: #94a3b8;
+  --cta-bg: var(--orange);
+  --cta-fg: #0a0e14;
+  --cta-bg-hover: var(--orange-soft);
+  --link: #93c5fd;
+  --line-color: #1f2937;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--fg);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+img { max-width: 100%; height: auto; display: block; }
+
+h1, h2, h3, h4 {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.6em;
+  line-height: 1.15;
+}
+h1 { font-size: clamp(2rem, 5vw, 3.4rem); }
+h2 { font-size: clamp(1.5rem, 3.2vw, 2.1rem); }
+h3 { font-size: 1.2rem; }
+p { margin: 0 0 1em; }
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line-color);
+  backdrop-filter: saturate(180%) blur(8px);
+}
+
+.site-header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.brand {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-size: 1.25rem;
+  color: var(--navy);
+}
+html[data-theme="dark"] .brand,
+@media (prefers-color-scheme: dark) { .brand { color: #93c5fd; } }
+
+.nav { display: flex; gap: 1.5rem; flex: 1; }
+.nav a {
+  color: var(--fg-soft);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+.nav a:hover, .nav a.is-current { color: var(--fg); text-decoration: none; }
+
+.cta {
+  display: inline-block;
+  padding: 0.65rem 1.2rem;
+  background: var(--cta-bg);
+  color: var(--cta-fg);
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.cta:hover { background: var(--cta-bg-hover); text-decoration: none; }
+
+/* ── Hero ───────────────────────────────────────────────────────────────── */
+
+.hero {
+  background: var(--hero-bg);
+  color: var(--hero-fg);
+  padding: clamp(3rem, 8vw, 6rem) 1.5rem;
+  text-align: center;
+}
+.hero-inner { max-width: 920px; margin: 0 auto; }
+
+.hero h1 {
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  margin-bottom: 0.6em;
+}
+
+.hero .subtitle {
+  font-size: clamp(1.1rem, 2.2vw, 1.35rem);
+  color: var(--hero-accent);
+  margin: 0 auto 2.2em;
+  max-width: 36rem;
+  line-height: 1.5;
+}
+
+.hero .cta { font-size: 1rem; padding: 0.85rem 1.6rem; }
+.hero .cta-meta {
+  display: block;
+  margin-top: 0.8rem;
+  font-size: 0.85rem;
+  color: var(--hero-accent);
+}
+
+.hero-image {
+  margin: 3rem auto 0;
+  max-width: 880px;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+/* ── Value strip (4 columns) ────────────────────────────────────────────── */
+
+.value-strip {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(3rem, 6vw, 5rem) 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2.5rem;
+}
+.value-item h3 {
+  font-size: 1.05rem;
+  color: var(--navy);
+  margin-bottom: 0.4em;
+}
+html[data-theme="dark"] .value-item h3 { color: #93c5fd; }
+@media (prefers-color-scheme: dark) {
+  .value-item h3 { color: #93c5fd; }
+}
+.value-item p { color: var(--fg-soft); font-size: 0.95rem; line-height: 1.6; }
+
+/* ── Section / band ─────────────────────────────────────────────────────── */
+
+.section {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: clamp(3rem, 6vw, 5rem) 1.5rem;
+}
+.section.narrow { max-width: 680px; }
+.section h2 { color: var(--navy); }
+html[data-theme="dark"] .section h2 { color: #93c5fd; }
+@media (prefers-color-scheme: dark) {
+  .section h2 { color: #93c5fd; }
+}
+
+.band {
+  background: var(--surface);
+  border-top: 1px solid var(--line-color);
+  border-bottom: 1px solid var(--line-color);
+}
+
+.pull-quote {
+  border-left: 3px solid var(--orange);
+  padding: 1rem 1.5rem;
+  margin: 2rem 0;
+  background: var(--surface);
+  font-style: italic;
+  color: var(--fg-soft);
+}
+
+ul.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
+}
+ul.feature-list li {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--line-color);
+}
+ul.feature-list li strong { color: var(--navy); }
+html[data-theme="dark"] ul.feature-list li strong { color: #93c5fd; }
+@media (prefers-color-scheme: dark) {
+  ul.feature-list li strong { color: #93c5fd; }
+}
+
+/* ── Social proof line ──────────────────────────────────────────────────── */
+
+.social-proof {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  color: var(--fg-soft);
+  font-size: 0.9rem;
+  border-top: 1px solid var(--line-color);
+}
+
+/* ── Footer ─────────────────────────────────────────────────────────────── */
+
+.site-footer {
+  background: var(--surface);
+  border-top: 1px solid var(--line-color);
+  padding: 2.5rem 1.5rem;
+  color: var(--fg-soft);
+  font-size: 0.85rem;
+  text-align: center;
+}
+.site-footer .footer-nav {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+.site-footer .attribution {
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: var(--fg-soft);
+  opacity: 0.8;
+}
+
+/* ── Sign-in page ───────────────────────────────────────────────────────── */
+
+body.centered {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+body.centered main {
+  padding: 2rem;
+  max-width: 32rem;
+}
+.sign-in-card {
+  background: var(--surface);
+  padding: 3rem 2.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--line-color);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+}
+.sign-in-card h1 {
+  font-size: 2rem;
+  margin-bottom: 0.4em;
+  color: var(--navy);
+}
+html[data-theme="dark"] .sign-in-card h1 { color: #93c5fd; }
+@media (prefers-color-scheme: dark) {
+  .sign-in-card h1 { color: #93c5fd; }
+}
+.sign-in-card .subtitle {
+  color: var(--fg-soft);
+  margin: 0 auto 2rem;
+  max-width: 24rem;
+  font-size: 1rem;
+}
+.sign-in-button-host {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+  min-height: 44px;
+}
+.sign-in-status {
+  font-size: 0.85rem;
+  color: var(--fg-soft);
+  margin-top: 1.5rem;
+  min-height: 1.2em;
+}
+.sign-in-status.error { color: #b91c1c; }
+.sign-in-card .small {
+  font-size: 0.75rem;
+  color: var(--fg-soft);
+  margin-top: 2rem;
+  letter-spacing: 0.04em;
+}
+
+.dev-signin {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px dashed var(--line-color);
+}
+.dev-signin input {
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--line-color);
+  border-radius: 0.4rem;
+  font-size: 0.9rem;
+  background: var(--bg);
+  color: var(--fg);
+  width: 14rem;
+  margin-right: 0.5rem;
+}
+
+/* ── Theme switch button ────────────────────────────────────────────────── */
+
+.theme-switch {
+  background: transparent;
+  border: 1px solid var(--line-color);
+  color: var(--fg-soft);
+  padding: 0.4rem 0.7rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.theme-switch:hover { color: var(--fg); border-color: var(--fg-soft); }
+
+/* ── Responsive nav ─────────────────────────────────────────────────────── */
+
+@media (max-width: 720px) {
+  .site-header-inner { gap: 1rem; padding: 0.85rem 1rem; }
+  .nav { display: none; }
+  .nav.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); padding: 1rem 1.5rem; border-bottom: 1px solid var(--line-color); }
+}
+
+/* ── Hero image positioned BETWEEN title and subtitle on home ──────────── */
+.hero h1 + .hero-image { margin-top: 1.5rem; }
+.hero-image + .subtitle { margin-top: 2rem; margin-bottom: 0; }
+.hero { padding: clamp(2rem, 6vw, 4rem) 1.5rem; }
+
+/* ── Page hero — image at the top of every inner page ──────────────────── */
+/* ── Page hero — image at the top of every inner page ─────────────────── */
+/* Show the full image at natural aspect ratio, scaled DOWN if needed —
+   never crop. Centered horizontally; capped vertically by max-height so
+   tall images don't push content off-screen. */
+.page-hero {
+  width: 100%;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line-color);
+  text-align: center;
+  padding: 0;
+}
+.page-hero img {
+  display: inline-block;
+  max-width: 100%;
+  max-height: 70vh;
+  width: auto;
+  height: auto;
+  vertical-align: middle;
+}
+
+/* ── Sample stamp ──────────────────────────────────────────────────────
+   Positioned at the home hero's upper-right corner (page-relative, not
+   image-relative). Transparent PNG; pointer-events none so it doesn't
+   block clicks. */
+.hero { position: relative; }
+.hero-stamp {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: clamp(140px, 18vw, 240px);
+  height: auto;
+  pointer-events: none;
+  z-index: 5;
+  transform: rotate(8deg);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.25));
+}
+@media (max-width: 720px) {
+  .hero-stamp { width: 120px; top: 0.5rem; right: 0.5rem; }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Chat widget — Ask iPhloat
+   Persistent floating button bottom-right; opens a side panel that calls
+   /api/chat/turn (The Weaver). Light/dark themed via existing vars.
+   ──────────────────────────────────────────────────────────────────────── */
+
+.iphloat-chat-button {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.85rem 1.2rem;
+  background: var(--cta-bg);
+  color: var(--cta-fg);
+  border: none;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
+.iphloat-chat-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.22), 0 4px 10px rgba(0, 0, 0, 0.10);
+}
+.iphloat-chat-button .ic { display: inline-flex; }
+.iphloat-chat-button.hidden { opacity: 0; pointer-events: none; transform: translateY(8px); }
+
+.iphloat-chat-panel {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  width: min(420px, calc(100vw - 2.5rem));
+  height: min(640px, calc(100vh - 2.5rem));
+  z-index: 99;
+  background: var(--surface);
+  border: 1px solid var(--line-color);
+  border-radius: 1rem;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25), 0 8px 16px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(12px) scale(0.98);
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.iphloat-chat-panel.open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.iphloat-chat-panel .ic-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1rem;
+  background: var(--navy);
+  color: var(--bone);
+  border-bottom: 1px solid var(--line-color);
+}
+.iphloat-chat-panel .ic-title {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  font-size: 0.95rem;
+}
+.iphloat-chat-panel .ic-close {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 0.3rem;
+  border-radius: 0.3rem;
+}
+.iphloat-chat-panel .ic-close:hover { background: rgba(255, 255, 255, 0.12); color: white; }
+
+.iphloat-chat-panel .ic-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  background: var(--bg);
+}
+
+.iphloat-chat-panel .ic-msg { display: flex; }
+.iphloat-chat-panel .ic-msg-user { justify-content: flex-end; }
+.iphloat-chat-panel .ic-msg-weaver { justify-content: flex-start; }
+.iphloat-chat-panel .ic-msg-error { justify-content: center; }
+
+.iphloat-chat-panel .ic-bubble {
+  max-width: 88%;
+  padding: 0.65rem 0.85rem;
+  border-radius: 1rem;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  background: var(--surface);
+  color: var(--fg);
+  border: 1px solid var(--line-color);
+  word-wrap: break-word;
+}
+.iphloat-chat-panel .ic-msg-user .ic-bubble {
+  background: var(--navy);
+  color: var(--bone);
+  border-color: transparent;
+  border-bottom-right-radius: 0.3rem;
+}
+.iphloat-chat-panel .ic-msg-weaver .ic-bubble {
+  border-bottom-left-radius: 0.3rem;
+}
+.iphloat-chat-panel .ic-msg-error .ic-bubble {
+  background: transparent;
+  border: none;
+  color: var(--fg-soft);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.iphloat-chat-panel .ic-bubble a.cite {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0 0.35rem;
+  margin: 0 0.1rem;
+  border-radius: 0.3rem;
+  background: rgba(249, 115, 22, 0.15);
+  color: var(--orange);
+  text-decoration: none;
+  vertical-align: 1px;
+}
+.iphloat-chat-panel .ic-msg-user .ic-bubble a.cite {
+  background: rgba(255, 255, 255, 0.18);
+  color: var(--bone);
+}
+.iphloat-chat-panel .ic-bubble a.cite:hover { text-decoration: underline; }
+
+.iphloat-chat-panel .ic-typing .ic-bubble {
+  display: inline-flex;
+  gap: 0.25rem;
+  align-items: center;
+  padding: 0.85rem 1rem;
+}
+.iphloat-chat-panel .ic-dot {
+  width: 6px; height: 6px;
+  background: var(--fg-soft);
+  border-radius: 50%;
+  animation: ic-typing 1.2s infinite ease-in-out;
+}
+.iphloat-chat-panel .ic-dot:nth-child(2) { animation-delay: 0.18s; }
+.iphloat-chat-panel .ic-dot:nth-child(3) { animation-delay: 0.36s; }
+@keyframes ic-typing {
+  0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+  30%           { opacity: 1; transform: translateY(-3px); }
+}
+
+.iphloat-chat-panel .ic-form {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.65rem 0.75rem;
+  border-top: 1px solid var(--line-color);
+  background: var(--surface);
+}
+.iphloat-chat-panel .ic-input {
+  flex: 1;
+  padding: 0.6rem 0.85rem;
+  font: inherit;
+  font-size: 0.92rem;
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--line-color);
+  border-radius: 0.55rem;
+  outline: none;
+}
+.iphloat-chat-panel .ic-input:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
+}
+.iphloat-chat-panel .ic-send {
+  background: var(--cta-bg);
+  color: var(--cta-fg);
+  border: none;
+  border-radius: 0.55rem;
+  padding: 0 0.85rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.iphloat-chat-panel .ic-send:hover { opacity: 0.9; }
+.iphloat-chat-panel .ic-send:disabled { opacity: 0.5; cursor: wait; }
+
+@media (max-width: 720px) {
+  .iphloat-chat-panel {
+    right: 0; bottom: 0; left: 0; top: 0;
+    width: 100%; height: 100%;
+    border-radius: 0; border: none;
+  }
+  .iphloat-chat-button { right: 1rem; bottom: 1rem; padding: 0.75rem 1rem; }
+  .iphloat-chat-button .lbl { display: none; } /* icon-only on mobile */
+}

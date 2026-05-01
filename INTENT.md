@@ -168,3 +168,130 @@ shims for absent code.
 5. **Update `BACKLOG.md` continuously.** Every decision the Wizard
    makes, every pattern you establish, every "we'll do this later"
    item — capture it. Future tenants will copy from here.
+
+## Additional intent — 2026-04-30 build phase brief
+
+The Wizard expanded the brief during the iPhloat session of
+2026-04-30, ahead of any code being written. These directives
+augment (and where they conflict, outvote) the seeding-time intent
+above.
+
+### What iPhloat actually prototypes
+
+iPhloat is the first realization of the **One Sentence Website**
+capability that Webspinner Studio will eventually run for every
+tenant. The capability turns the three offerings — *imagery*,
+*prose*, and a *single sentence of intent* — into a deployed
+Webspinner tenant. iPhloat builds this capability from scratch in
+Claude Code, by orchestrating the existing Kepler substrate
+(embeddings, corpus, loom). What works for iPhloat will be
+extracted into Studio. The Wizard will manually drop the imagery
+and prose into this repo for iPhloat itself; Studio will handle
+that step for tenants 2–100.
+
+### How the build agent must behave
+
+This is **AI Native SDLC** and **AI Native Agile** — software
+discipline applied to a build run by an AI agent partnered with
+a human author.
+
+- **Sophisticated loom.** Content creation runs on a loom capable
+  of exemplary work, not the cheapest available.
+- **Current knowledge with citations.** The agent accesses current
+  credible third-party sources and cites them. Prior LLM training
+  is not sufficient.
+- **One recommendation, no questions.** When a choice arises, the
+  agent commits to a single recommendation. It does not interview
+  the author with a list of questions.
+- **Iterative and interactive.** Small steps, each tested before
+  the next. No big-bang generation followed by review-and-fix.
+- **Retrospective-driven author input.** When the author's input
+  is needed, the build does a retrospective — presents what has
+  been built so far, takes input, iterates. The easy way out is
+  forbidden.
+- **Live progress, no silent waits.** The author always sees what
+  the agent is doing. No timers, no arbitrary gates — events,
+  responses, and interrupts queue in real time and execute swiftly.
+- **Imagery is load-bearing.** Uploaded imagery drives the site's
+  CSS — colors, palettes, type pairings, layout-density cues. The
+  build does not compromise the design by ignoring what was given.
+
+### What every Webspinner site delivers (UX invariants)
+
+Patron-facing UX rules every Webspinner site honors. iPhloat as
+tenant #1 sets the cookie-cutter for tenants 2–100; drift on any
+of these breaks the recognition that *this is a Webspinner site*.
+
+- **Two-panel layout.** Chat panel on one side, Cognitive Content
+  panel on the other (right-of-chat is the canonical placement).
+- **Brief chat.** The AI is brief in the chat panel.
+- **Single-page Cognitive Content.** The Cognitive Content panel
+  shows one page at a time — composed for the patron's current
+  question, replacing rather than stacking.
+- **Event-driven.** Events originate from chat, web objects
+  (buttons, menus, links), and slow server-side responses.
+  Events queue in real time and execute swiftly. No timers, no
+  arbitrary gates.
+- **Live progress always.** The site always tells the patron what
+  it is doing while it is doing it. No silent waits.
+- **Light and dark themes, switchable in real time.** Reference
+  the Sovereign AI app's runtime theme switch (instant, no page
+  reload).
+- **Imagery-derived CSS.** The patron experiences the site as
+  visually coherent with the imagery the author provided.
+
+### Architectural boundary — front-end portable, back-end Webspinner-core
+
+A non-negotiable separation, set 2026-04-30: while iPhloat is
+being built, Webspinner is also building the server-side
+proprietary agents that *build* websites. The two must not
+mingle.
+
+- **Front-end (this repo, `~/iPhloat/`).** Portable. A site
+  owner can extract it and host elsewhere — the $5 extraction
+  promise is real. Static or near-static patron-facing UI. **No
+  proprietary intelligent agents and no Spinners inside this
+  repo.** The website is a consumer of services, not an
+  implementer.
+- **Back-end (`~/webspinner-work/`).** Where Webspinner's
+  proprietary agents, Spinners, and multi-tenant services live.
+  iPhloat calls these services through the existing Cloudflare
+  Tunnel that fronts the rest of the ecosystem.
+
+**Multi-tenant requirement.** Every back-end service iPhloat
+relies on must be multi-tenant and configurable through runtime
+parameters. No hard-coded values for tenant identity, hostname,
+loom selection, database paths, port numbers, theme defaults, or
+anything else that may need to change. iPhloat is tenant #1 of
+100+; a literal `iphloat` in any shared code path is a defect.
+
+**Real domain.** `iphloat.com` is a registered Cloudflare zone.
+iPhloat is hosted from `iPhloat.com` directly — not a subdomain
+of `webspinner.*`. The CF Tunnel maps `iphloat.com` to a Kepler
+loopback port.
+
+**Catalog membership.** All sites built by Webspinner Studio go
+into a catalog that `webspinner.live` features and launches.
+iPhloat enters that catalog. Whatever back-end registers a site
+in the catalog must be designed multi-tenant from the first call.
+
+**Vault for credentials.** `wsvault` is how back-end agents and
+services receive the credentials they need. The standing rule
+holds: never export provider keys in a shell session — Vault →
+install script → launchd plist only.
+
+**Blast-radius discipline.** Don't break code that already works.
+Any service iPhloat needs added to Webspinner core is added
+*additively* — new module, behind feature flags, with tests,
+without disturbing existing tenants (analyzer, sovereign, legal,
+weaver, weaver-memory, mlx-server-weaver, cognitive-store,
+cognitive-cdn, image-engine, etc.).
+
+### Build phase posture
+
+- No code yet — the Wizard releases the build phase explicitly.
+- When code lands, every patron-facing surface ships behind a
+  feature flag. Flags flip only as each surface clears its tests
+  end-to-end.
+- No git commits or pushes to GitHub until the Wizard authorizes
+  public exposure.
