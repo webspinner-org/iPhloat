@@ -11,7 +11,10 @@ Skeleton placeholder while the One Sentence Website build agent prepares the rea
 
 ## Served by
 
-The Webspinner-core back-end at `~/webspinner-work/kepler/iphloat/` mounts this directory as static files at the root path. Locally during development, that back-end runs on `127.0.0.1:11800`. In production, the Cloudflare Tunnel routes `iphloat.com` to that loopback port on Kepler.
+The Webspinner back-end mounts this directory as static files at the
+root path of `iphloat.com`. The back-end is a per-tenant FastAPI
+service that the Webspinner ecosystem provisions; the patron-facing
+URL is reached through the Cloudflare edge.
 
 ## What lives here later
 
